@@ -14,7 +14,7 @@ margin on the most recent example
 import numpy as np
 
 
-def passive_agressive_online(X, y):
+def passive_agressive_online(X, y, impl, C=None):
     """Learn a weight vector from the data matrix X using a passive-agressive
     learning algorithm"""
     
@@ -29,7 +29,12 @@ def passive_agressive_online(X, y):
         # Compute loss l_t
         l_t = max([0, 1 - y_t*np.dot(w, x_t)])
         # Compute r_t
-        r_t = l_t / (np.linalg.norm(x_t)^2)
+        if impl == "classic":
+            r_t = l_t / (np.linalg.norm(x_t)**2)
+        elif impl == "relax1":
+            r_t = min([C, l_t / (np.linalg.norm(x_t)**2)])
+        elif impl == "relax2":
+            r_t = l_t / ((np.linalg.norm(x_t)**2) + 1/(2*C))
         # Compute update
         w += r_t * y_t * x_t
         
