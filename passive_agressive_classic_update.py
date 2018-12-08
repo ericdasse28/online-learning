@@ -39,3 +39,9 @@ def passive_agressive_online(X, y, impl, C=None):
         w += r_t * y_t * x_t
         
     return w
+
+
+def predict(X, w):
+    """Predict the label for each row in matrix w"""
+    
+    return np.sign(np.dot(X, w))
